@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqi5u46fb8k86"]
+
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="1_as21a"]
+[ext_resource type="Script" uid="uid://n8nixpnmnwnh" path="res://Scenes/Title/SceneLoader.gd" id="2_ohf0e"]
+[ext_resource type="PackedScene" uid="uid://c668q201tisby" path="res://Scenes/Explorer/explorer.tscn" id="3_05pry"]
+
+[node name="Title Screen" type="Node2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Game Title" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Game Title"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="RichTextLabel" parent="CanvasLayer/Game Title/VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme = ExtResource("1_as21a")
+theme_override_font_sizes/normal_font_size = 150
+bbcode_enabled = true
+text = "[center][wave amp=50.0 freq=5.0 connected=1]Title[/wave][/center]"
+
+[node name="StartButton" type="Button" parent="CanvasLayer/Game Title/VBoxContainer"]
+custom_minimum_size = Vector2(0.83, 4.02)
+layout_mode = 2
+text = "Start"
+script = ExtResource("2_ohf0e")
+scene = ExtResource("3_05pry")
+
+[connection signal="pressed" from="CanvasLayer/Game Title/VBoxContainer/StartButton" to="CanvasLayer/Game Title/VBoxContainer/StartButton" method="loadScene"]

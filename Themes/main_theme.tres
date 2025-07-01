@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://c8xmvufel6w6v"]
+
+[ext_resource type="FontFile" uid="uid://uf2iiqwsdxkt" path="res://Fonts/Serious Shanns/SeriousShanns-Bold.otf" id="1_jg5j1"]
+[ext_resource type="FontFile" uid="uid://begi1c5aleo8h" path="res://Fonts/Serious Shanns/SeriousShanns-BoldItalic.otf" id="2_2f3ak"]
+[ext_resource type="FontFile" uid="uid://dy1n0fgnbb0fs" path="res://Fonts/Serious Shanns/SeriousShanns-Italic.otf" id="3_kcyw7"]
+[ext_resource type="FontFile" uid="uid://s2w0paocxd1y" path="res://Fonts/Serious Shanns/SeriousShanns-Regular.otf" id="4_j453h"]
+
+[resource]
+RichTextLabel/fonts/bold_font = ExtResource("1_jg5j1")
+RichTextLabel/fonts/bold_italics_font = ExtResource("2_2f3ak")
+RichTextLabel/fonts/italics_font = ExtResource("3_kcyw7")
+RichTextLabel/fonts/mono_font = ExtResource("4_j453h")
+RichTextLabel/fonts/normal_font = ExtResource("4_j453h")

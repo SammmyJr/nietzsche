@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://c668q201tisby"]
+
+[ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w4rt7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_51r7l"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_po3i8"]
+albedo_color = Color(0, 0.32549, 0, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8e1qk"]
+
+[node name="Explorer" type="Node3D"]
+
+[node name="World Floor Boundary" type="StaticBody3D" parent="."]
+
+[node name="WFB Collision" type="CollisionShape3D" parent="World Floor Boundary"]
+shape = SubResource("WorldBoundaryShape3D_w4rt7")
+
+[node name="WFB Mesh" type="MeshInstance3D" parent="World Floor Boundary/WFB Collision"]
+mesh = SubResource("PlaneMesh_51r7l")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_po3i8")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.705909, 0, 0.708303, 0, 1, 0, -0.708303, 0, 0.705909, 0, 0, 0)
+script = ExtResource("1_51r7l")
+
+[node name="Player Shape" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_8e1qk")
+
+[node name="Pivot" type="Marker3D" parent="Player"]
+
+[node name="Camera" type="Camera3D" parent="Player/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="World Elements" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World Elements"]
+transform = Transform3D(1, 0, 0, 0, 0.698128, 0.715973, 0, -0.715973, 0.698128, 0, -4.9273, 0)
