@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://c668q201tisby"]
+[gd_scene load_steps=17 format=3 uid="uid://c668q201tisby"]
 
 [ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
 [ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="2_po3i8"]
@@ -8,6 +8,7 @@
 [ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="5_4h55a"]
 [ext_resource type="Script" uid="uid://c6a8qsj62c5kx" path="res://Scenes/Windows/Stats/stats.gd" id="6_m2krx"]
 [ext_resource type="Script" uid="uid://gyut3frevbh3" path="res://Scenes/Explorer/debug.gd" id="7_dktlx"]
+[ext_resource type="Script" uid="uid://bcpd85m423nrg" path="res://Scenes/Windows/Stats/stats_box.gd" id="7_nspe7"]
 [ext_resource type="Script" uid="uid://d0k1xvfg51s7q" path="res://Scenes/Explorer/encounter_manager.gd" id="8_udcdx"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w4rt7"]
@@ -160,6 +161,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -225.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_dktlx")
@@ -178,16 +180,61 @@ text = "Safe"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Control" type="Control" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 25.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats/CanvasLayer/Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status Box Top" type="Panel" parent="Stats/CanvasLayer/Control/Control/VBoxContainer"]
+custom_minimum_size = Vector2(500, 75)
+layout_mode = 2
+script = ExtResource("7_nspe7")
+
+[node name="Status Name" type="Label" parent="Stats/CanvasLayer/Control/Control/VBoxContainer/Status Box Top"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Name Here"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Stats/CanvasLayer/Control/Control/VBoxContainer/Status Box Top"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+show_percentage = false
+
 [node name="Debug" type="Window" parent="."]
 auto_translate_mode = 1
 transparent_bg = true
 title = "Debug"
 initial_position = 2
 size = Vector2i(100, 250)
+visible = false
 unresizable = true
 always_on_top = true
 transparent = true
 script = ExtResource("7_dktlx")
+startPositionOffset = Vector2i(-450, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Debug"]
 
