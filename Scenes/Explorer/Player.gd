@@ -1,57 +1,69 @@
+class_name Player
 extends CharacterBody3D
 
-# How fast the player moves in meters per second.
-@export var speed = 14
+signal stepTaken
 
-# How fast the player can look around left and right
-@export var lookSpeed = 1
-
-# The downward acceleration when in the air, in meters per second squared.
+@export var lookSpeed: float = 7.5
 @export var fall_acceleration = 75
 
-var target_velocity = Vector3.ZERO
-var target_rotation = Vector3.ZERO
+@onready var moveTween = null
+@export var moveSpeed = 0.15
+@export var moveDistance = 5.0
+
+var targetPosition: Vector3
+
+@onready var turnTween = create_tween()
+var targetRotation = Quaternion()
+var newRotation = Quaternion()
+
+@onready var stateManager: StateManager = get_node("/root/Explorer/State Manager")
+
+func _ready():
+	targetPosition = global_transform.origin 
 
 func _physics_process(delta):
-	# We create a local variable to store the input direction.
-	var direction = Vector3.ZERO
-	var lookDirection = Vector3.ZERO
-
-	# We check for each move input and update the direction accordingly.
-	if Input.is_action_pressed("move_right"):
-		direction.x += 1
-	if Input.is_action_pressed("move_left"):
-		direction.x -= 1
-	if Input.is_action_pressed("move_backward"):
-		# Notice how we are working with the vector's x and z axes.
-		# In 3D, the XZ plane is the ground plane.
-		direction.z += 1
-	if Input.is_action_pressed("move_forward"):
-		direction.z -= 1
-		
-	if direction != Vector3.ZERO:
-		direction = direction.normalized()
-		
-	# Ground Velocity
-	# Needs to be converted from local space to global space, hmmmm...
-	# Maybe something like position.FORWARD might work
-	target_velocity.x = direction.x * speed
-	target_velocity.z = direction.z * speed
+	var inputDirection = Vector3.ZERO
 	
-	# Vertical Velocity
-	if not is_on_floor(): # If in the air, fall towards the floor. Literally gravity
-		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
-		
-	# Turn the character around so they can look around
-	if Input.is_action_pressed("look_left"):
-		lookDirection.y += 0.1 * lookSpeed
+	if Input.is_action_just_pressed("move_right"):
+		inputDirection += Vector3.RIGHT
+	if Input.is_action_just_pressed("move_left"):
+		inputDirection -= Vector3.RIGHT
+	if Input.is_action_just_pressed("move_backward"):
+		inputDirection -= Vector3.FORWARD
+	if Input.is_action_just_pressed("move_forward"):
+		inputDirection += Vector3.FORWARD
 
-	if Input.is_action_pressed("look_right"):
-		lookDirection.y -= 0.1 * lookSpeed
+	# Only step if there's input & not in combat
+	if inputDirection != Vector3.ZERO and stateManager.currentState == 0:
+		# Rotate input to local
+		inputDirection = global_transform.basis * inputDirection
+		inputDirection.y = 0
+		inputDirection = inputDirection.normalized() * moveDistance
 		
-	# Turn the character
-	rotation += lookDirection
+		targetPosition += inputDirection
+		move_to_target()
 
-	# Moving the Character
-	velocity = target_velocity
-	move_and_slide()
+	# Snap-turn
+	if Input.is_action_just_pressed("look_left"):
+		rotate_smoothly(PI / 2)
+
+	if Input.is_action_just_pressed("look_right"):
+		rotate_smoothly(-PI / 2)
+	
+	# Rotate only if not in combat
+	if stateManager.currentState == 0:
+		newRotation = newRotation.slerp(targetRotation, lookSpeed * delta)
+		global_transform.basis = Basis(targetRotation)
+		$Pivot.global_transform.basis = Basis(newRotation)
+
+func move_to_target():
+	if moveTween and moveTween.is_valid():
+		moveTween.kill()
+	moveTween = create_tween()
+	moveTween.tween_property(self, "global_position", targetPosition, moveSpeed).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	stepTaken.emit()
+
+func rotate_smoothly(angleDelta):
+	# Calculate new target by rotating current target by delta yaw
+	var yaw_quat = Quaternion(Vector3.UP, angleDelta)
+	targetRotation = yaw_quat * targetRotation

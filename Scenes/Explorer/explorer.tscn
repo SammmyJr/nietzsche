@@ -1,16 +1,29 @@
-[gd_scene load_steps=6 format=3 uid="uid://c668q201tisby"]
+[gd_scene load_steps=16 format=3 uid="uid://c668q201tisby"]
 
 [ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="2_po3i8"]
+[ext_resource type="Script" uid="uid://gjqkrfqht1t6" path="res://Scenes/Explorer/encounter.gd" id="3_8e1qk"]
+[ext_resource type="Script" uid="uid://cg6m851p10kno" path="res://Scenes/Windows/Log/log.gd" id="4_58p05"]
+[ext_resource type="Script" uid="uid://d2jin52eoevpn" path="res://Scenes/Explorer/state_manager.gd" id="4_wx3vi"]
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="5_4h55a"]
+[ext_resource type="Script" uid="uid://c6a8qsj62c5kx" path="res://Scenes/Windows/Stats/stats.gd" id="6_m2krx"]
+[ext_resource type="Script" uid="uid://gyut3frevbh3" path="res://Scenes/Explorer/debug.gd" id="7_dktlx"]
+[ext_resource type="Script" uid="uid://d0k1xvfg51s7q" path="res://Scenes/Explorer/encounter_manager.gd" id="8_udcdx"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w4rt7"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_51r7l"]
-size = Vector2(20, 20)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_po3i8"]
-albedo_color = Color(0, 0.32549, 0, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8e1qk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wx3vi"]
+size = Vector3(15, 5, 7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dktlx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udcdx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
 
 [node name="Explorer" type="Node3D"]
 
@@ -18,14 +31,13 @@ albedo_color = Color(0, 0.32549, 0, 1)
 
 [node name="WFB Collision" type="CollisionShape3D" parent="World Floor Boundary"]
 shape = SubResource("WorldBoundaryShape3D_w4rt7")
+debug_color = Color(0.971531, 0, 0.447315, 0.42)
 
-[node name="WFB Mesh" type="MeshInstance3D" parent="World Floor Boundary/WFB Collision"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World Floor Boundary"]
+transform = Transform3D(20, 0.00221248, -0.0104737, -0.00220803, 20, 0.00847527, 0.0104746, -0.00847443, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_51r7l")
-skeleton = NodePath("../../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_po3i8")
 
 [node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(0.705909, 0, 0.708303, 0, 1, 0, -0.708303, 0, 0.705909, 0, 0, 0)
 script = ExtResource("1_51r7l")
 
 [node name="Player Shape" type="CollisionShape3D" parent="Player"]
@@ -36,8 +48,188 @@ shape = SubResource("CapsuleShape3D_8e1qk")
 
 [node name="Camera" type="Camera3D" parent="Player/Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+fov = 60.0
 
 [node name="World Elements" type="Node3D" parent="."]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="World Elements"]
 transform = Transform3D(1, 0, 0, 0, 0.698128, 0.715973, 0, -0.715973, 0.698128, 0, -4.9273, 0)
+
+[node name="Encounter" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
+script = ExtResource("3_8e1qk")
+
+[node name="Area3D" type="Area3D" parent="Encounter"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Encounter/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1)
+shape = SubResource("BoxShape3D_wx3vi")
+debug_color = Color(0.653152, 0.514318, 1.92523e-07, 0.42)
+
+[node name="Hardline Summon" type="Window" parent="."]
+transparent_bg = true
+title = "Hardline Summon"
+initial_position = 2
+size = Vector2i(400, 400)
+visible = false
+unresizable = true
+always_on_top = true
+transparent = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Hardline Summon"]
+
+[node name="Control" type="Control" parent="Hardline Summon/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Node2D" type="Node2D" parent="Hardline Summon/CanvasLayer"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Hardline Summon/CanvasLayer/Node2D"]
+position = Vector2(200, 200)
+scale = Vector2(2.15625, 2)
+texture = ExtResource("2_po3i8")
+
+[node name="Log" type="Window" parent="."]
+auto_translate_mode = 1
+transparent_bg = true
+title = "Log"
+initial_position = 2
+size = Vector2i(350, 450)
+unresizable = true
+always_on_top = true
+transparent = true
+script = ExtResource("4_58p05")
+startPositionOffset = Vector2i(625, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Log"]
+
+[node name="Control" type="Control" parent="Log/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Log Background" type="Panel" parent="Log/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Log RichText" type="RichTextLabel" parent="Log/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("5_4h55a")
+bbcode_enabled = true
+scroll_following = true
+
+[node name="Stats" type="Window" parent="."]
+auto_translate_mode = 1
+transparent_bg = true
+title = "Stats"
+initial_position = 2
+size = Vector2i(500, 250)
+unresizable = true
+always_on_top = true
+transparent = true
+script = ExtResource("6_m2krx")
+startPositionOffset = Vector2i(0, 300)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Stats"]
+
+[node name="Control" type="Control" parent="Stats/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status Background" type="Panel" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dktlx")
+
+[node name="Status Label" type="Label" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("5_4h55a")
+text = "Safe"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Debug" type="Window" parent="."]
+auto_translate_mode = 1
+transparent_bg = true
+title = "Debug"
+initial_position = 2
+size = Vector2i(100, 250)
+unresizable = true
+always_on_top = true
+transparent = true
+script = ExtResource("7_dktlx")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Debug"]
+
+[node name="Control" type="Control" parent="Debug/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status Background" type="Panel" parent="Debug/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_udcdx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start Combat" type="Button" parent="Debug/CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "S. Combat"
+
+[node name="End Combat" type="Button" parent="Debug/CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "E. Combat"
+
+[node name="State Manager" type="Node" parent="."]
+script = ExtResource("4_wx3vi")
+
+[node name="Encounter Manager" type="Node" parent="."]
+script = ExtResource("8_udcdx")
+metadata/_custom_type_script = "uid://d2jin52eoevpn"
+
+[connection signal="pressed" from="Debug/CanvasLayer/Control/VBoxContainer/Start Combat" to="Debug" method="_on_start_combat_pressed"]
+[connection signal="pressed" from="Debug/CanvasLayer/Control/VBoxContainer/End Combat" to="Debug" method="_on_end_combat_pressed"]

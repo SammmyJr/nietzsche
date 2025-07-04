@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Daemon" load_steps=2 format=3 uid="uid://vrd7l4ul4f60"]
+
+[ext_resource type="Script" uid="uid://bjwa41iarf84g" path="res://Daemons/Raw/daemon.gd" id="1_ewb3o"]
+
+[resource]
+script = ExtResource("1_ewb3o")
+name = "Testy"
+metadata/_custom_type_script = "uid://bjwa41iarf84g"
