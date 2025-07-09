@@ -1,0 +1,79 @@
+[gd_scene load_steps=6 format=3 uid="uid://ime58o1q4an"]
+
+[ext_resource type="Script" uid="uid://b0ka4selfb37c" path="res://Scenes/Explorer/enemy_placement.gd" id="1_fe2em"]
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="2_oxs41"]
+
+[sub_resource type="Animation" id="Animation_oxs41"]
+resource_name = "idle_energetic"
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 25, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1)
+}
+
+[sub_resource type="Animation" id="Animation_vqkh7"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:offset:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite3D:offset:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(25, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mvx1m"]
+_data = {
+&"RESET": SubResource("Animation_vqkh7"),
+&"idle_energetic": SubResource("Animation_oxs41")
+}
+
+[node name="Placement" type="Node3D"]
+script = ExtResource("1_fe2em")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.457957, 0)
+offset = Vector2(0, 25)
+billboard = 1
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("2_oxs41")
+region_rect = Rect2(-6.305, 0, -0.31, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mvx1m")
+}
+autoplay = "idle_energetic"

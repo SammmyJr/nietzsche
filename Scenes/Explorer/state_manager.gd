@@ -10,11 +10,8 @@ enum GameState {
 
 @onready var logWindow: Log = get_node("/root/Explorer/Log")
 
-func startCombat():
-	logWindow.warning("Combat Started!")
+func startCombat(encounter: Encounter):
 	currentState = GameState.COMBAT
-	
-func endCombat():
-	logWindow.warning("Combat Ended!")
-	
-	currentState = GameState.EXPLORE
+	logWindow.show()
+	logWindow.warning("Combat Started!")
+	combatManager.beginCombat(encounter)

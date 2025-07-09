@@ -3,6 +3,8 @@ extends Manager
 
 signal encounterStageChanged
 
+@export var defaultEncounter: Encounter
+
 @export var encounterRate: float = 0.5 # Chance for likelyhood of encounters to go up based on each step
 var currentEncounterStage = 1
 	# 0 ~ Safe
@@ -18,7 +20,7 @@ func rollEncounter():
 	if currentEncounterStage > 0: #Check if encounters are allowed
 		if randf_range(0, 1.0) <= encounterRate:
 			if currentEncounterStage >= 3:
-				stateManager.startCombat()
+				stateManager.startCombat(defaultEncounter)
 				currentEncounterStage = 1
 			else:
 				currentEncounterStage += 1

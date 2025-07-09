@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://bqhece37v2xio"]
+
+[ext_resource type="Script" uid="uid://cphhyhrc7klwv" path="res://Classes/skillResource.gd" id="1_jw6b8"]
+
+[resource]
+script = ExtResource("1_jw6b8")
+damage = 1
+spCost = 1
+actionName = "Spike"
+actionType = 1
+metadata/_custom_type_script = "uid://cphhyhrc7klwv"

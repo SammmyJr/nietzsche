@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://dr8n5pbimya6g"]
+
+[ext_resource type="Script" uid="uid://bl70vvfr4q2r" path="res://Scenes/Windows/Stock/stock_slot.gd" id="1_p6iej"]
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="2_0o7ij"]
+
+[node name="Stock Slot" type="Control"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_p6iej")
+
+[node name="Slot Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_0o7ij")
+
+[node name="Slot Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 5.0
+offset_right = -5.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Name"
+
+[node name="Slot Health" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+offset_right = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_0o7ij")
+theme_type_variation = &"Health"
+
+[node name="Slot Skill" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_0o7ij")
+theme_type_variation = &"Skill"
+fill_mode = 1

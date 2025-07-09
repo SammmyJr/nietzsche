@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://3ceilhsmwt84"]
+
+[ext_resource type="Script" uid="uid://ce3n8ogsd4qjc" path="res://Scenes/Windows/Dock/icon.gd" id="1_w0r26"]
+
+[node name="Icon" type="Button"]
+custom_minimum_size = Vector2(100, 0)
+text = "Stock"
+script = ExtResource("1_w0r26")

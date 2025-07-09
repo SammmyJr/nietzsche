@@ -1,8 +1,21 @@
-[gd_resource type="Resource" script_class="Daemon" load_steps=2 format=3 uid="uid://vrd7l4ul4f60"]
+[gd_resource type="Resource" script_class="Daemon" load_steps=5 format=3 uid="uid://vrd7l4ul4f60"]
 
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="1_dc5bg"]
 [ext_resource type="Script" uid="uid://bjwa41iarf84g" path="res://Daemons/Raw/daemon.gd" id="1_ewb3o"]
+[ext_resource type="Script" uid="uid://cphhyhrc7klwv" path="res://Classes/skillResource.gd" id="2_g8e10"]
+[ext_resource type="Resource" uid="uid://bqhece37v2xio" path="res://Skills/spike.tres" id="3_dc5bg"]
 
 [resource]
 script = ExtResource("1_ewb3o")
-name = "Testy"
+id = "123"
+summonCost = 1
+stepCost = 1
+username = "Testy"
+image = ExtResource("1_dc5bg")
+hp = 10
+sp = 5
+maxHP = 10
+maxSP = 5
+speed = 0.13
+skills = Array[ExtResource("2_g8e10")]([ExtResource("3_dc5bg")])
 metadata/_custom_type_script = "uid://bjwa41iarf84g"

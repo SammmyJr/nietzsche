@@ -1,6 +1,6 @@
 class_name Daemon
-extends Resource
+extends EntityResource
 
-@export var name: String = "New Daemon"
-@export var maxHP: int = 10
-@export var maxSP: int = 5
+@export var id: String = "123"
+@export var summonCost: int = 1
+@export var stepCost: int = 1

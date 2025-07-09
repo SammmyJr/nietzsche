@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="PlayerStats" load_steps=7 format=3 uid="uid://bne64mffv8wyc"]
+
+[ext_resource type="Script" uid="uid://n8s6nm34eh21" path="res://Player/Raw/player_stats.gd" id="1_x3bd6"]
+[ext_resource type="Script" uid="uid://cphhyhrc7klwv" path="res://Classes/skillResource.gd" id="2_qj2x5"]
+[ext_resource type="Script" uid="uid://bjwa41iarf84g" path="res://Daemons/Raw/daemon.gd" id="3_6e0ub"]
+[ext_resource type="Resource" uid="uid://bqhece37v2xio" path="res://Skills/spike.tres" id="3_tf4hj"]
+[ext_resource type="Resource" uid="uid://wi0sywbqdyyo" path="res://Skills/annihilate.tres" id="5_6e0ub"]
+[ext_resource type="Resource" uid="uid://vrd7l4ul4f60" path="res://Daemons/Testy.tres" id="5_dftad"]
+
+[resource]
+script = ExtResource("1_x3bd6")
+activeStock = Array[ExtResource("3_6e0ub")]([])
+stock = Array[ExtResource("3_6e0ub")]([ExtResource("5_dftad")])
+money = 100
+hexbytes = 50
+username = "You"
+hp = 10
+sp = 99
+maxHP = 10
+maxSP = 99
+speed = 0.3
+skills = Array[ExtResource("2_qj2x5")]([ExtResource("3_tf4hj"), ExtResource("5_6e0ub")])
+metadata/_custom_type_script = "uid://n8s6nm34eh21"

@@ -1,0 +1,67 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0wn7uov7s7ml"]
+
+[ext_resource type="Script" uid="uid://bcpd85m423nrg" path="res://Scenes/Windows/Stats/stats_box.gd" id="1_g3lyg"]
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="2_3i01c"]
+
+[node name="Status Box Top" type="Panel"]
+custom_minimum_size = Vector2(500, 75)
+script = ExtResource("1_g3lyg")
+
+[node name="Status Name" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Name Here"
+horizontal_alignment = 1
+
+[node name="Slot Health" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -27.0
+offset_right = -250.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_3i01c")
+theme_type_variation = &"Health"
+
+[node name="Slot Skill" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 250.0
+offset_top = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_3i01c")
+theme_type_variation = &"Skill"
+fill_mode = 1
+
+[node name="Slot Time" type="ProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -52.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_3i01c")
+theme_type_variation = &"TimeBar"
+show_percentage = false
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true

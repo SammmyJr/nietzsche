@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SkillResource" load_steps=2 format=3 uid="uid://wi0sywbqdyyo"]
+
+[ext_resource type="Script" uid="uid://cphhyhrc7klwv" path="res://Classes/skillResource.gd" id="1_85oag"]
+
+[resource]
+script = ExtResource("1_85oag")
+damage = 999
+spCost = 1
+actionName = "Annihilate!"
+actionType = 1
+metadata/_custom_type_script = "uid://cphhyhrc7klwv"

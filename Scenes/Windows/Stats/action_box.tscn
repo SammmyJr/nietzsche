@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://gklxonjvnboc"]
+
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="1_27aba"]
+[ext_resource type="Script" uid="uid://dbm7kp0c0gdci" path="res://Scenes/Windows/Stats/action_box.gd" id="2_7q8pj"]
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(0, 50)
+offset_right = 221.0
+offset_bottom = 50.0
+text = "This is a spell!"
+icon = ExtResource("1_27aba")
+icon_alignment = 2
+expand_icon = true
+script = ExtResource("2_7q8pj")

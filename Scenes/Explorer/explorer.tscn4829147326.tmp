@@ -1,0 +1,666 @@
+[gd_scene load_steps=38 format=3 uid="uid://c668q201tisby"]
+
+[ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
+[ext_resource type="Script" uid="uid://gjqkrfqht1t6" path="res://Scenes/Explorer/encounter.gd" id="3_8e1qk"]
+[ext_resource type="Script" uid="uid://ltvv6fnllgu7" path="res://Scenes/Windows/Hardline Summon/hardline_summon.gd" id="3_r4srd"]
+[ext_resource type="Script" uid="uid://cg6m851p10kno" path="res://Scenes/Windows/Log/log.gd" id="4_58p05"]
+[ext_resource type="Script" uid="uid://d2jin52eoevpn" path="res://Scenes/Explorer/state_manager.gd" id="4_wx3vi"]
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="5_4h55a"]
+[ext_resource type="Script" uid="uid://c6a8qsj62c5kx" path="res://Scenes/Windows/Stats/stats.gd" id="6_m2krx"]
+[ext_resource type="Script" uid="uid://dmsudtp1x4lex" path="res://Classes/entityResource.gd" id="7_0kpht"]
+[ext_resource type="Script" uid="uid://gyut3frevbh3" path="res://Scenes/Explorer/debug.gd" id="7_dktlx"]
+[ext_resource type="Resource" uid="uid://b0chhck3upekh" path="res://Encounters/basicEncounter.tres" id="7_pldw0"]
+[ext_resource type="Resource" uid="uid://b1wv12q7ajb1x" path="res://Daemons/Angy.tres" id="8_11t1b"]
+[ext_resource type="Script" uid="uid://d0k1xvfg51s7q" path="res://Scenes/Explorer/encounter_manager.gd" id="8_udcdx"]
+[ext_resource type="Script" uid="uid://b534ntma5ee4l" path="res://Classes/encounterResource.gd" id="9_11t1b"]
+[ext_resource type="Script" uid="uid://cinrtsx5tvqhk" path="res://Scenes/Windows/Curreny/currency.gd" id="10_r4srd"]
+[ext_resource type="Script" uid="uid://bw3ncvcqjdfa2" path="res://Scenes/Windows/Dock/dock.gd" id="10_ta2fg"]
+[ext_resource type="Script" uid="uid://baop0gxscwise" path="res://Scenes/Windows/Stock/stock.gd" id="11_1ffck"]
+[ext_resource type="Texture2D" uid="uid://dqdrxtcmusftx" path="res://Daemons/Sprites/Angy.png" id="15_ccfgq"]
+[ext_resource type="Script" uid="uid://b5qxohxl10hpl" path="res://Scenes/Explorer/enemy_display.gd" id="15_khr32"]
+[ext_resource type="Script" uid="uid://bipb7q8eh7i63" path="res://Scenes/Explorer/combat_manager.gd" id="15_nas8x"]
+[ext_resource type="Shader" uid="uid://jl8xbwdo3gwt" path="res://Shaders/blur.gdshader" id="15_nx8xd"]
+[ext_resource type="Script" uid="uid://b0ka4selfb37c" path="res://Scenes/Explorer/enemy_placement.gd" id="17_worqj"]
+[ext_resource type="Script" uid="uid://cdw2pbbrkjhdk" path="res://Scenes/Explorer/music_manager.gd" id="18_11t1b"]
+[ext_resource type="AudioStream" uid="uid://c7f6he8ajmobr" path="res://Music/raw/seaark.mp3" id="19_ccfgq"]
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="19_frurn"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w4rt7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_51r7l"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8e1qk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nx8xd"]
+
+[sub_resource type="Resource" id="Resource_ccfgq"]
+script = ExtResource("9_11t1b")
+possibleEnemies = Array[ExtResource("7_0kpht")]([ExtResource("8_11t1b")])
+metadata/_custom_type_script = "uid://b534ntma5ee4l"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wx3vi"]
+size = Vector3(15, 5, 7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udcdx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dktlx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_khr32"]
+shader = ExtResource("15_nx8xd")
+shader_parameter/blur_amount = 1.5
+shader_parameter/mix_amount = 0.5
+shader_parameter/color_over = Color(0.176471, 0, 0.501961, 1)
+shader_parameter/r_displacement = Vector2(20, 5)
+shader_parameter/g_displacement = Vector2(0, 10)
+shader_parameter/b_displacement = Vector2(-20, -5)
+
+[sub_resource type="Environment" id="Environment_3s8k1"]
+background_color = Color(0, 0, 0, 0)
+fog_enabled = true
+
+[sub_resource type="World3D" id="World3D_ccfgq"]
+environment = SubResource("Environment_3s8k1")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nx8xd"]
+size = Vector2(7, 7)
+
+[sub_resource type="Resource" id="Resource_11t1b"]
+script = ExtResource("9_11t1b")
+possibleEnemies = Array[ExtResource("7_0kpht")]([ExtResource("8_11t1b")])
+metadata/_custom_type_script = "uid://b534ntma5ee4l"
+
+[node name="Explorer" type="Node3D"]
+
+[node name="World Floor Boundary" type="StaticBody3D" parent="."]
+
+[node name="WFB Collision" type="CollisionShape3D" parent="World Floor Boundary"]
+shape = SubResource("WorldBoundaryShape3D_w4rt7")
+debug_color = Color(0.971531, 0, 0.447315, 0.42)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World Floor Boundary"]
+transform = Transform3D(20, 0.00221248, -0.0104737, -0.00220803, 20, 0.00847527, 0.0104746, -0.00847443, 20, 0, 0, 0)
+mesh = SubResource("PlaneMesh_51r7l")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+script = ExtResource("1_51r7l")
+
+[node name="Player Shape" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_8e1qk")
+
+[node name="Pivot" type="Marker3D" parent="Player"]
+
+[node name="Camera" type="Camera3D" parent="Player/Pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+current = true
+fov = 60.0
+
+[node name="World Elements" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World Elements"]
+transform = Transform3D(1, 0, 0, 0, 0.698128, 0.715973, 0, -0.715973, 0.698128, 0, -4.9273, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World Elements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
+mesh = SubResource("CapsuleMesh_nx8xd")
+skeleton = NodePath("../..")
+
+[node name="Label3D" type="Label3D" parent="World Elements/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -8)
+text = "Encounter Here!"
+font_size = 124
+
+[node name="Encounter" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
+script = ExtResource("3_8e1qk")
+encounter = SubResource("Resource_ccfgq")
+
+[node name="Area3D" type="Area3D" parent="Encounter"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Encounter/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1)
+shape = SubResource("BoxShape3D_wx3vi")
+debug_color = Color(0.653152, 0.514318, 1.92523e-07, 0.42)
+
+[node name="Hardline Summon" type="Window" parent="."]
+title = "Hardline Summon"
+initial_position = 2
+size = Vector2i(300, 500)
+visible = false
+unresizable = true
+always_on_top = true
+script = ExtResource("3_r4srd")
+startPositionOffset = Vector2i(-50, -50)
+anchorPoint = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Hardline Summon"]
+
+[node name="Control" type="Control" parent="Hardline Summon/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Keypad" type="HBoxContainer" parent="Hardline Summon/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = 100.0
+offset_right = 4.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Left" type="VBoxContainer" parent="Hardline Summon/CanvasLayer/Control/Keypad"]
+layout_mode = 2
+
+[node name="7" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Left"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "7"
+
+[node name="4" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Left"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "4"
+
+[node name="1" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Left"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "1
+"
+
+[node name="Clear" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Left"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "C"
+
+[node name="Middle" type="VBoxContainer" parent="Hardline Summon/CanvasLayer/Control/Keypad"]
+layout_mode = 2
+
+[node name="8" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Middle"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "8"
+
+[node name="5" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Middle"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "5"
+
+[node name="2" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Middle"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "2
+"
+
+[node name="0" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Middle"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "0"
+
+[node name="Right" type="VBoxContainer" parent="Hardline Summon/CanvasLayer/Control/Keypad"]
+layout_mode = 2
+
+[node name="9" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Right"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "9"
+
+[node name="6" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Right"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "6"
+
+[node name="3" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Right"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "3
+"
+
+[node name="Enter" type="Button" parent="Hardline Summon/CanvasLayer/Control/Keypad/Right"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+text = "OK"
+
+[node name="Entry" type="Panel" parent="Hardline Summon/CanvasLayer/Control"]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 98.0
+
+[node name="Entry Rich Text" type="RichTextLabel" parent="Hardline Summon/CanvasLayer/Control/Entry"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "123"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Log" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Log"
+initial_position = 2
+size = Vector2i(250, 100)
+visible = false
+unresizable = true
+borderless = true
+always_on_top = true
+script = ExtResource("4_58p05")
+startPositionOffset = Vector2i(0, -350)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Log"]
+
+[node name="Control" type="Control" parent="Log/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Log Background" type="Panel" parent="Log/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_4h55a")
+theme_type_variation = &"BlackPanel"
+
+[node name="Log RichText" type="RichTextLabel" parent="Log/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("5_4h55a")
+bbcode_enabled = true
+scroll_following = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Debug" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Debug"
+initial_position = 2
+size = Vector2i(100, 250)
+visible = false
+unresizable = true
+always_on_top = true
+script = ExtResource("7_dktlx")
+defaultEncounter = ExtResource("7_pldw0")
+startPositionOffset = Vector2i(-450, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Debug"]
+
+[node name="Control" type="Control" parent="Debug/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status Background" type="Panel" parent="Debug/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_udcdx")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Debug/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start Combat" type="Button" parent="Debug/CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "S. Combat"
+
+[node name="End Combat" type="Button" parent="Debug/CanvasLayer/Control/VBoxContainer"]
+layout_mode = 2
+text = "E. Combat"
+
+[node name="Stock" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Stock"
+initial_position = 2
+size = Vector2i(200, 300)
+visible = false
+unresizable = true
+always_on_top = true
+script = ExtResource("11_1ffck")
+startPositionOffset = Vector2i(-525, -150)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Stock"]
+
+[node name="Control" type="Control" parent="Stock/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stock Background" type="Panel" parent="Stock/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_4h55a")
+
+[node name="Slots" type="VBoxContainer" parent="Stock/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dock" type="Window" parent="." node_paths=PackedStringArray("windows")]
+auto_translate_mode = 1
+title = "Dock"
+initial_position = 2
+size = Vector2i(500, 100)
+visible = false
+unresizable = true
+always_on_top = true
+script = ExtResource("10_ta2fg")
+windows = [NodePath("../Stock"), NodePath("../Debug"), NodePath("../Stats"), NodePath("../Hardline Summon")]
+startPositionOffset = Vector2i(0, -50)
+anchorPoint = 3
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Dock"]
+
+[node name="Control" type="Control" parent="Dock/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dock Background" type="Panel" parent="Dock/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_4h55a")
+
+[node name="Dock Windows" type="HBoxContainer" parent="Dock/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Currency" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Currency"
+initial_position = 2
+size = Vector2i(150, 200)
+visible = false
+unresizable = true
+always_on_top = true
+script = ExtResource("10_r4srd")
+startPositionOffset = Vector2i(50, 50)
+anchorPoint = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Currency"]
+
+[node name="Control" type="Control" parent="Currency/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dock Background" type="Panel" parent="Currency/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_4h55a")
+
+[node name="Currency RichText" type="RichTextLabel" parent="Currency/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "Dollars: $???
+Hexbytes: ₿???"
+
+[node name="Stats" type="Window" parent="."]
+auto_translate_mode = 1
+title = "Stats"
+initial_position = 2
+size = Vector2i(750, 250)
+visible = false
+unresizable = true
+always_on_top = true
+content_scale_stretch = 1
+script = ExtResource("6_m2krx")
+startPositionOffset = Vector2i(0, 300)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Stats"]
+
+[node name="Control" type="Control" parent="Stats/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Status Background" type="Panel" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dktlx")
+
+[node name="Status Label" type="Label" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("5_4h55a")
+text = "Safe"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="Stats/CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 25.0
+offset_right = -250.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats/CanvasLayer/Control/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control2" type="Control" parent="Stats/CanvasLayer/Control"]
+anchors_preset = 0
+offset_left = 500.0
+offset_top = 25.0
+offset_right = 750.0
+offset_bottom = 250.0
+
+[node name="Action Background" type="Panel" parent="Stats/CanvasLayer/Control/Control2"]
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 225.0
+
+[node name="Action Container" type="VBoxContainer" parent="Stats/CanvasLayer/Control/Control2/Action Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Enemy Display" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_khr32")
+metadata/_edit_use_anchors_ = true
+
+[node name="Display Background" type="ColorRect" parent="Enemy Display"]
+visible = false
+material = SubResource("ShaderMaterial_khr32")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Enemy Display"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="Enemy Display/SubViewportContainer"]
+own_world_3d = true
+world_3d = SubResource("World3D_ccfgq")
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Battle Camera" type="Camera3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 2)
+current = true
+fov = 60.0
+
+[node name="Battle Plane" type="MeshInstance3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("PlaneMesh_nx8xd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="Enemy Placements" type="Node3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+
+[node name="Front Middle" type="Node3D" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+script = ExtResource("17_worqj")
+
+[node name="Sprite3D" type="Sprite3D" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements/Front Middle"]
+billboard = 1
+alpha_cut = 1
+alpha_antialiasing_mode = 2
+texture_filter = 0
+texture = ExtResource("15_ccfgq")
+region_rect = Rect2(-6.305, 0, -0.31, 0)
+
+[node name="Sprite3D" type="Sprite3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+texture = ExtResource("19_frurn")
+
+[node name="Enemy Container" type="HBoxContainer" parent="Enemy Display"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Target Panel" type="Panel" parent="Enemy Display"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 98.0
+grow_horizontal = 2
+
+[node name="Front Middle" type="Button" parent="Enemy Display/Target Panel"]
+layout_mode = 0
+offset_left = 150.0
+offset_right = 450.0
+offset_bottom = 98.0
+focus_neighbor_right = NodePath("../Front Right")
+text = "Target Front Middle"
+
+[node name="Front Right" type="Button" parent="Enemy Display/Target Panel"]
+offset_left = 450.0
+offset_right = 750.0
+offset_bottom = 98.0
+focus_neighbor_left = NodePath("../Front Middle")
+text = "Target Front Right
+"
+
+[node name="State Manager" type="Node" parent="."]
+script = ExtResource("4_wx3vi")
+
+[node name="Encounter Manager" type="Node" parent="."]
+script = ExtResource("8_udcdx")
+defaultEncounter = SubResource("Resource_11t1b")
+metadata/_custom_type_script = "uid://d2jin52eoevpn"
+
+[node name="Combat Manager" type="Node" parent="."]
+script = ExtResource("15_nas8x")
+
+[node name="Music Manager" type="Node" parent="."]
+script = ExtResource("18_11t1b")
+
+[node name="BGM" type="AudioStreamPlayer" parent="Music Manager"]
+stream = ExtResource("19_ccfgq")
+
+[connection signal="pressed" from="Debug/CanvasLayer/Control/VBoxContainer/Start Combat" to="Debug" method="_on_start_combat_pressed"]
+[connection signal="pressed" from="Debug/CanvasLayer/Control/VBoxContainer/End Combat" to="Debug" method="_on_end_combat_pressed"]

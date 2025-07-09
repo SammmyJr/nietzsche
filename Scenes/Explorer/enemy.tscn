@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=3 uid="uid://bnbdk7nmko3g1"]
+
+[ext_resource type="Texture2D" uid="uid://bpr16wwf71gwi" path="res://icon.svg" id="1_aipj5"]
+[ext_resource type="Script" uid="uid://cx4ll1yw6jqbl" path="res://Scenes/Explorer/enemy.gd" id="1_rrxnt"]
+[ext_resource type="Theme" uid="uid://c8xmvufel6w6v" path="res://Themes/main_theme.tres" id="3_7tike"]
+
+[sub_resource type="Animation" id="Animation_7tike"]
+resource_name = "idle_energetic"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dh4yi"]
+_data = {
+&"idle_energetic": SubResource("Animation_7tike")
+}
+
+[node name="Enemy" type="Control"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rrxnt")
+
+[node name="Enemy Select" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+icon_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="Enemy Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Name Here!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Enemy Image" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("1_aipj5")
+stretch_mode = 5
+
+[node name="Enemy Animation" type="AnimationPlayer" parent="VBoxContainer"]
+libraries = {
+&"": SubResource("AnimationLibrary_dh4yi")
+}
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Enemy Text" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+mouse_force_pass_scroll_events = false
+theme = ExtResource("3_7tike")
+theme_type_variation = &"EnemyText"
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false

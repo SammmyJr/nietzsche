@@ -2,6 +2,7 @@ class_name Player
 extends CharacterBody3D
 
 signal stepTaken
+signal stockUpdated
 
 @export var lookSpeed: float = 7.5
 @export var fall_acceleration = 75
@@ -17,6 +18,7 @@ var targetRotation = Quaternion()
 var newRotation = Quaternion()
 
 @onready var stateManager: StateManager = get_node("/root/Explorer/State Manager")
+@onready var stats: PlayerStats = load("res://Saves/slot1.tres")
 
 func _ready():
 	targetPosition = global_transform.origin 
