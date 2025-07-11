@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="Encounter" load_steps=4 format=3 uid="uid://b0chhck3upekh"]
+[gd_resource type="Resource" script_class="Encounter" load_steps=5 format=3 uid="uid://b0chhck3upekh"]
 
 [ext_resource type="Script" uid="uid://dmsudtp1x4lex" path="res://Classes/entityResource.gd" id="1_7eo6y"]
 [ext_resource type="Script" uid="uid://b534ntma5ee4l" path="res://Classes/encounterResource.gd" id="2_0ea82"]
 [ext_resource type="Resource" uid="uid://b1wv12q7ajb1x" path="res://Daemons/Angy.tres" id="2_jv0ac"]
+[ext_resource type="Resource" uid="uid://vrd7l4ul4f60" path="res://Daemons/Testy.tres" id="3_jv0ac"]
 
 [resource]
 script = ExtResource("2_0ea82")
-possibleEnemies = Array[ExtResource("1_7eo6y")]([ExtResource("2_jv0ac"), ExtResource("2_jv0ac"), ExtResource("2_jv0ac")])
+possibleEnemies = Array[ExtResource("1_7eo6y")]([ExtResource("2_jv0ac"), ExtResource("3_jv0ac")])
 metadata/_custom_type_script = "uid://b534ntma5ee4l"

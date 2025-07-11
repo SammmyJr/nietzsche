@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="Options" load_steps=2 format=3 uid="uid://dc7mfkpfotqai"]
+
+[ext_resource type="Script" uid="uid://shqlnkhswk6n" path="res://Player/Raw/options.gd" id="1_hdp4t"]
+
+[resource]
+script = ExtResource("1_hdp4t")
+windowScale = 2.0
+metadata/_custom_type_script = "uid://shqlnkhswk6n"

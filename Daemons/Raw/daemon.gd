@@ -4,3 +4,5 @@ extends EntityResource
 @export var id: String = "123"
 @export var summonCost: int = 1
 @export var stepCost: int = 1
+
+@export_enum("Calm", "Energetic", "Docile") var temperment: int = 0

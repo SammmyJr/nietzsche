@@ -34,6 +34,9 @@ func endCombat():
 	stateManager.logWindow.warning("Combat Ended!")
 	stateManager.logWindow.hide()
 	
+	# Check everything is dead
+	enemyDisplay.resetEnemies()
+	
 	stateManager.currentState = 0
 	enounterManager.currentEncounterStage = 1
 	enounterManager.encounterStageChanged.emit()
@@ -57,6 +60,8 @@ func updateCurrentEncountersList():
 	# Display current encounter and hook up targeting logic
 	for daemon in currentEncounters:
 		enemyDisplay.registerEnemy(daemon)
+	
+	enemyDisplay.resetCursor()
 
 func changeTarget(target: Daemon):
 	if target in currentEncounters: # Check if the target is still valid

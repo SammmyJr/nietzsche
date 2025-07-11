@@ -25,8 +25,9 @@ func resetPosition():
 func _ready():
 	resetPosition()
 	
-	get_window().content_scale_factor = windowScaleFactor
-	get_window().size = get_window().size * windowScaleFactor
+	# Resize our window to fit with whats specified in optios
+	get_window().content_scale_factor = player.stats.options.windowScale
+	get_window().size = get_window().size * player.stats.options.windowScale
 	
 	self.visibility_changed.connect(resetPosition)
 	

@@ -10,6 +10,7 @@ script = ExtResource("1_gdtnw")
 id = "123"
 summonCost = 1
 stepCost = 1
+temperment = 1
 username = "Angy"
 sprite = ExtResource("4_0expv")
 hp = 3

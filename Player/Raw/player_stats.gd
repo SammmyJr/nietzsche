@@ -6,6 +6,8 @@ signal currencyChanged
 @export var activeStock: Array[Daemon] = []
 @export var stock: Array[Daemon] = []
 
+@export var options: Options = preload("res://Player/defaults.tres")
+
 @export var money: int = 100:
 	set(value):
 		money = value

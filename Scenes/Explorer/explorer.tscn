@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://c668q201tisby"]
+[gd_scene load_steps=40 format=3 uid="uid://c668q201tisby"]
 
 [ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
 [ext_resource type="Script" uid="uid://gjqkrfqht1t6" path="res://Scenes/Explorer/encounter.gd" id="3_8e1qk"]
@@ -21,8 +21,9 @@
 [ext_resource type="Shader" uid="uid://jl8xbwdo3gwt" path="res://Shaders/blur.gdshader" id="15_nx8xd"]
 [ext_resource type="PackedScene" uid="uid://ime58o1q4an" path="res://Scenes/Explorer/placement.tscn" id="17_worqj"]
 [ext_resource type="Script" uid="uid://cdw2pbbrkjhdk" path="res://Scenes/Explorer/music_manager.gd" id="18_11t1b"]
-[ext_resource type="Texture2D" uid="uid://bk1kgqnyqo65a" path="res://Skills/Animations/raw/window_04.png" id="18_worqj"]
+[ext_resource type="Texture2D" uid="uid://ckmidhtmjqfdk" path="res://Icons/arrowDown.png" id="18_frurn"]
 [ext_resource type="AudioStream" uid="uid://c7f6he8ajmobr" path="res://Music/raw/seaark.mp3" id="19_ccfgq"]
+[ext_resource type="Script" uid="uid://bslghcivwfs4a" path="res://Scenes/Explorer/window_manager.gd" id="19_frurn"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_w4rt7"]
 
@@ -65,10 +66,42 @@ environment = SubResource("Environment_3s8k1")
 [sub_resource type="PlaneMesh" id="PlaneMesh_nx8xd"]
 size = Vector2(7, 7)
 
-[sub_resource type="Resource" id="Resource_11t1b"]
-script = ExtResource("9_11t1b")
-possibleEnemies = Array[ExtResource("7_0kpht")]([ExtResource("8_11t1b")])
-metadata/_custom_type_script = "uid://b534ntma5ee4l"
+[sub_resource type="Animation" id="Animation_frurn"]
+resource_name = "cursorIdle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -25), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_x7umm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0vrvq"]
+_data = {
+&"RESET": SubResource("Animation_x7umm"),
+&"cursorIdle": SubResource("Animation_frurn")
+}
 
 [node name="Explorer" type="Node3D"]
 
@@ -594,35 +627,45 @@ mesh = SubResource("PlaneMesh_nx8xd")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
 [node name="Enemy Placements" type="Node3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="Front Left" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 1, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -1)
 
 [node name="Front Middle" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="Front Right" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 1, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -1)
 
 [node name="Back Left" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 1.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -4)
 
 [node name="Back Middle" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 
 [node name="Back Right" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 1.5, -4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -4)
 
 [node name="Cursor" type="Sprite3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-pixel_size = 0.001
-texture = ExtResource("18_worqj")
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 2, -2)
+texture = ExtResource("18_frurn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy Display/SubViewportContainer/SubViewport/Cursor"]
+libraries = {
+&"": SubResource("AnimationLibrary_0vrvq")
+}
+autoplay = "cursorIdle"
+
+[node name="Window Manager" type="Node" parent="."]
+script = ExtResource("19_frurn")
 
 [node name="State Manager" type="Node" parent="."]
 script = ExtResource("4_wx3vi")
 
 [node name="Encounter Manager" type="Node" parent="."]
 script = ExtResource("8_udcdx")
-defaultEncounter = SubResource("Resource_11t1b")
+defaultEncounter = ExtResource("7_pldw0")
 metadata/_custom_type_script = "uid://d2jin52eoevpn"
 
 [node name="Combat Manager" type="Node" parent="."]
@@ -630,6 +673,7 @@ script = ExtResource("15_nas8x")
 
 [node name="Music Manager" type="Node" parent="."]
 script = ExtResource("18_11t1b")
+musicEnabled = true
 
 [node name="BGM" type="AudioStreamPlayer" parent="Music Manager"]
 stream = ExtResource("19_ccfgq")
