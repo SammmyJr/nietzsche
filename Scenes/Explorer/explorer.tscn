@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://c668q201tisby"]
+[gd_scene load_steps=41 format=3 uid="uid://c668q201tisby"]
 
 [ext_resource type="Script" uid="uid://b0w6o4ysb7ad2" path="res://Scenes/Explorer/Player.gd" id="1_51r7l"]
 [ext_resource type="Script" uid="uid://gjqkrfqht1t6" path="res://Scenes/Explorer/encounter.gd" id="3_8e1qk"]
@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://b5qxohxl10hpl" path="res://Scenes/Explorer/enemy_display.gd" id="15_khr32"]
 [ext_resource type="Script" uid="uid://bipb7q8eh7i63" path="res://Scenes/Explorer/combat_manager.gd" id="15_nas8x"]
 [ext_resource type="Shader" uid="uid://jl8xbwdo3gwt" path="res://Shaders/blur.gdshader" id="15_nx8xd"]
+[ext_resource type="Script" uid="uid://ofi3yhvhehgl" path="res://Scenes/Explorer/explorer.gd" id="16_x7umm"]
 [ext_resource type="PackedScene" uid="uid://ime58o1q4an" path="res://Scenes/Explorer/placement.tscn" id="17_worqj"]
 [ext_resource type="Script" uid="uid://cdw2pbbrkjhdk" path="res://Scenes/Explorer/music_manager.gd" id="18_11t1b"]
 [ext_resource type="Texture2D" uid="uid://ckmidhtmjqfdk" path="res://Icons/arrowDown.png" id="18_frurn"]
@@ -41,12 +42,6 @@ metadata/_custom_type_script = "uid://b534ntma5ee4l"
 [sub_resource type="BoxShape3D" id="BoxShape3D_wx3vi"]
 size = Vector3(15, 5, 7)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udcdx"]
-bg_color = Color(0.6, 0.6, 0.6, 0.407843)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dktlx"]
-bg_color = Color(0.6, 0.6, 0.6, 0.407843)
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_khr32"]
 shader = ExtResource("15_nx8xd")
 shader_parameter/blur_amount = 1.5
@@ -66,6 +61,21 @@ environment = SubResource("Environment_3s8k1")
 [sub_resource type="PlaneMesh" id="PlaneMesh_nx8xd"]
 size = Vector2(7, 7)
 
+[sub_resource type="Animation" id="Animation_x7umm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_frurn"]
 resource_name = "cursorIdle"
 loop_mode = 1
@@ -82,79 +92,169 @@ tracks/0/keys = {
 "values": [Vector2(0, 0), Vector2(0, -25), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_x7umm"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_0vrvq"]
 _data = {
 &"RESET": SubResource("Animation_x7umm"),
 &"cursorIdle": SubResource("Animation_frurn")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_udcdx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dktlx"]
+bg_color = Color(0.6, 0.6, 0.6, 0.407843)
+
 [node name="Explorer" type="Node3D"]
 
-[node name="World Floor Boundary" type="StaticBody3D" parent="."]
+[node name="Explorer" type="Window" parent="."]
+initial_position = 2
+size = Vector2i(1120, 600)
+script = ExtResource("16_x7umm")
+metadata/_custom_type_script = "uid://11nynk3a1l8h"
 
-[node name="WFB Collision" type="CollisionShape3D" parent="World Floor Boundary"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Explorer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Explorer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1120, 600)
+render_target_update_mode = 4
+
+[node name="World Floor Boundary" type="StaticBody3D" parent="Explorer/SubViewportContainer/SubViewport"]
+
+[node name="WFB Collision" type="CollisionShape3D" parent="Explorer/SubViewportContainer/SubViewport/World Floor Boundary"]
 shape = SubResource("WorldBoundaryShape3D_w4rt7")
 debug_color = Color(0.971531, 0, 0.447315, 0.42)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World Floor Boundary"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Explorer/SubViewportContainer/SubViewport/World Floor Boundary"]
 transform = Transform3D(20, 0.00221248, -0.0104737, -0.00220803, 20, 0.00847527, 0.0104746, -0.00847443, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_51r7l")
 
-[node name="Player" type="CharacterBody3D" parent="."]
+[node name="Player" type="CharacterBody3D" parent="Explorer/SubViewportContainer/SubViewport"]
 script = ExtResource("1_51r7l")
 
-[node name="Player Shape" type="CollisionShape3D" parent="Player"]
+[node name="Player Shape" type="CollisionShape3D" parent="Explorer/SubViewportContainer/SubViewport/Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_8e1qk")
 
-[node name="Pivot" type="Marker3D" parent="Player"]
+[node name="Pivot" type="Marker3D" parent="Explorer/SubViewportContainer/SubViewport/Player"]
 
-[node name="Camera" type="Camera3D" parent="Player/Pivot"]
+[node name="Camera" type="Camera3D" parent="Explorer/SubViewportContainer/SubViewport/Player/Pivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 current = true
 fov = 60.0
 
-[node name="World Elements" type="Node3D" parent="."]
+[node name="World Elements" type="Node3D" parent="Explorer/SubViewportContainer/SubViewport"]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World Elements"]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Explorer/SubViewportContainer/SubViewport/World Elements"]
 transform = Transform3D(1, 0, 0, 0, 0.698128, 0.715973, 0, -0.715973, 0.698128, 0, -4.9273, 0)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World Elements"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Explorer/SubViewportContainer/SubViewport/World Elements"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
 mesh = SubResource("CapsuleMesh_nx8xd")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../../../..")
 
-[node name="Label3D" type="Label3D" parent="World Elements/MeshInstance3D"]
+[node name="Label3D" type="Label3D" parent="Explorer/SubViewportContainer/SubViewport/World Elements/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -8)
 text = "Encounter Here!"
 font_size = 124
 
-[node name="Encounter" type="Node3D" parent="."]
+[node name="Encounter" type="Node3D" parent="Explorer/SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
 script = ExtResource("3_8e1qk")
 encounter = SubResource("Resource_ccfgq")
 
-[node name="Area3D" type="Area3D" parent="Encounter"]
+[node name="Area3D" type="Area3D" parent="Explorer/SubViewportContainer/SubViewport/Encounter"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Encounter/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Explorer/SubViewportContainer/SubViewport/Encounter/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -1)
 shape = SubResource("BoxShape3D_wx3vi")
 debug_color = Color(0.653152, 0.514318, 1.92523e-07, 0.42)
+
+[node name="Enemy Display" type="Control" parent="Explorer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_khr32")
+metadata/_edit_use_anchors_ = true
+
+[node name="Display Background" type="ColorRect" parent="Explorer/Enemy Display"]
+material = SubResource("ShaderMaterial_khr32")
+layout_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Explorer/Enemy Display"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+metadata/_edit_use_anchors_ = true
+
+[node name="SubViewport" type="SubViewport" parent="Explorer/Enemy Display/SubViewportContainer"]
+own_world_3d = true
+world_3d = SubResource("World3D_ccfgq")
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1120, 600)
+render_target_update_mode = 4
+
+[node name="Battle Camera" type="Camera3D" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 2.335, 2)
+current = true
+fov = 60.0
+
+[node name="Battle Plane" type="MeshInstance3D" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("PlaneMesh_nx8xd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="Enemy Placements" type="Node3D" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="Front Left" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -1)
+
+[node name="Front Middle" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="Front Right" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -1)
+
+[node name="Back Left" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -4)
+
+[node name="Back Middle" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="Back Right" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -4)
+
+[node name="Cursor" type="Sprite3D" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 2, -2)
+texture = ExtResource("18_frurn")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Explorer/Enemy Display/SubViewportContainer/SubViewport/Cursor"]
+libraries = {
+&"": SubResource("AnimationLibrary_0vrvq")
+}
+autoplay = "cursorIdle"
 
 [node name="Hardline Summon" type="Window" parent="."]
 title = "Hardline Summon"
@@ -577,86 +677,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Enemy Display" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("15_khr32")
-metadata/_edit_use_anchors_ = true
-
-[node name="Display Background" type="ColorRect" parent="Enemy Display"]
-material = SubResource("ShaderMaterial_khr32")
-layout_mode = 2
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="SubViewportContainer" type="SubViewportContainer" parent="Enemy Display"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-stretch = true
-metadata/_edit_use_anchors_ = true
-
-[node name="SubViewport" type="SubViewport" parent="Enemy Display/SubViewportContainer"]
-own_world_3d = true
-world_3d = SubResource("World3D_ccfgq")
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(1152, 648)
-render_target_update_mode = 4
-
-[node name="Battle Camera" type="Camera3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 2)
-current = true
-fov = 60.0
-
-[node name="Battle Plane" type="MeshInstance3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-mesh = SubResource("PlaneMesh_nx8xd")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
-
-[node name="Enemy Placements" type="Node3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="Front Left" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -1)
-
-[node name="Front Middle" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-
-[node name="Front Right" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -1)
-
-[node name="Back Left" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -4)
-
-[node name="Back Middle" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
-
-[node name="Back Right" parent="Enemy Display/SubViewportContainer/SubViewport/Enemy Placements" instance=ExtResource("17_worqj")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 0, -4)
-
-[node name="Cursor" type="Sprite3D" parent="Enemy Display/SubViewportContainer/SubViewport"]
-transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 0, 2, -2)
-texture = ExtResource("18_frurn")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Enemy Display/SubViewportContainer/SubViewport/Cursor"]
-libraries = {
-&"": SubResource("AnimationLibrary_0vrvq")
-}
-autoplay = "cursorIdle"
-
 [node name="Window Manager" type="Node" parent="."]
 script = ExtResource("19_frurn")
 
@@ -673,7 +693,6 @@ script = ExtResource("15_nas8x")
 
 [node name="Music Manager" type="Node" parent="."]
 script = ExtResource("18_11t1b")
-musicEnabled = true
 
 [node name="BGM" type="AudioStreamPlayer" parent="Music Manager"]
 stream = ExtResource("19_ccfgq")

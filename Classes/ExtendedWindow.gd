@@ -8,7 +8,7 @@ extends Window
 @onready var stateManger: StateManager = get_node("/root/Explorer/State Manager")
 @onready var encounterManger: EncounterManager = get_node("/root/Explorer/Encounter Manager")
 @onready var combatManger: CombatManager = get_node("/root/Explorer/Combat Manager")
-@onready var player: Player = get_node("/root/Explorer/Player")
+@onready var player: Player = get_node("/root/Explorer/Explorer/SubViewportContainer/SubViewport/Player")
 
 var anchors = []
 
@@ -26,6 +26,7 @@ func _ready():
 	resetPosition()
 	
 	# Resize our window to fit with whats specified in optios
+	print(player)
 	get_window().content_scale_factor = player.stats.options.windowScale
 	get_window().size = get_window().size * player.stats.options.windowScale
 	

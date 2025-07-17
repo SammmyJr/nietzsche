@@ -1,0 +1,121 @@
+[gd_scene load_steps=9 format=3 uid="uid://vx821bw70j0l"]
+
+[ext_resource type="Script" uid="uid://7orc58ikow84" path="res://Scenes/Introduction/introduction.gd" id="1_w3rp1"]
+[ext_resource type="Shader" uid="uid://cnu8c5oibukdi" path="res://Shaders/dithering.gdshader" id="2_uetny"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xomuw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mpy0"]
+render_priority = 0
+shader = ExtResource("2_uetny")
+shader_parameter/color = Color(1, 1, 1, 0.5)
+
+[sub_resource type="Animation" id="Animation_w3rp1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.785398, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_uetny"]
+_data = {
+&"RESET": SubResource("Animation_w3rp1")
+}
+
+[sub_resource type="Animation" id="Animation_7mpy0"]
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.785398, 0), Vector3(0, 5.49779, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ojjxf"]
+_data = {
+&"CubeSpin": SubResource("Animation_7mpy0")
+}
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w3rp1")
+
+[node name="Dialog" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -124.0
+offset_right = 124.0
+offset_bottom = 124.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Dialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Dialog/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(248, 248)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Dialog/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 1, 2)
+current = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Dialog/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0, 0, 0)
+mesh = SubResource("BoxMesh_xomuw")
+surface_material_override/0 = SubResource("ShaderMaterial_7mpy0")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Dialog/SubViewportContainer/SubViewport/MeshInstance3D"]
+libraries = {
+&"": SubResource("AnimationLibrary_uetny"),
+&"Introduction": SubResource("AnimationLibrary_ojjxf")
+}
+autoplay = "Introduction/CubeSpin"
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Dialog/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.807022, -0.417562, 0.417562, -0.312483, 0.298026, 0.901962, -0.501069, -0.858384, 0.110033, 2.09999, 1.80477, 3)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Dialog"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+bbcode_enabled = true
+text = "This is text!"
+horizontal_alignment = 1
+vertical_alignment = 1

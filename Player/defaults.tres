@@ -4,5 +4,5 @@
 
 [resource]
 script = ExtResource("1_hdp4t")
-windowScale = 2.0
+windowScale = 1.0
 metadata/_custom_type_script = "uid://shqlnkhswk6n"

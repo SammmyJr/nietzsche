@@ -18,7 +18,7 @@ var targetRotation = Quaternion()
 var newRotation = Quaternion()
 
 @onready var stateManager: StateManager = get_node("/root/Explorer/State Manager")
-@onready var stats: PlayerStats = load("res://Saves/slot1.tres")
+@export var stats: PlayerStats = load("res://Saves/slot1.tres")
 
 func _ready():
 	targetPosition = global_transform.origin 
